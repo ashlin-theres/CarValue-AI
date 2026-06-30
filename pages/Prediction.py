@@ -53,9 +53,20 @@ st.markdown(
 # LOAD MODEL
 # ==========================================================
 
-model = joblib.load(
-    BASE_DIR / "models" / "carvalue_pipeline.pkl"
-)
+import requests
+import joblib
+
+MODEL_URL = "https://huggingface.co/ashlintheres4/carvalue-ai-model/resolve/main/carvalue_pipeline.pkl"
+MODEL_PATH = "carvalue_pipeline.pkl"
+
+def load_model():
+    response = requests.get(MODEL_URL)
+    with open(MODEL_PATH, "wb") as f:
+        f.write(response.content)
+
+    return joblib.load(MODEL_PATH)
+
+model = load_model()
 
 # ==========================================================
 # LOAD DATA
